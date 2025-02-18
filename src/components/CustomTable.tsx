@@ -5,9 +5,25 @@ import { pxToRem } from '@/utils'
 const TableWrapper = styled.div`
   overflow-x: auto;
   width: 100%;
+
   table {
     width: 100%;
     border-collapse: collapse;
+
+    .ellipsis {
+      display: block;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .ellipsis-sm {
+      width: ${pxToRem(300)};
+    }
+
+    .ellipsis-xs {
+      width: ${pxToRem(150)};
+    }
 
     th,
     td {
@@ -26,7 +42,7 @@ const TableWrapper = styled.div`
     }
 
     tr {
-      boder-bottom: ${pxToRem(1)} solid
+      border-bottom: ${pxToRem(1)} solid
         ${(props) => props.theme.appDefaultStroke};
       &:last-child {
         border-bottom: none;
@@ -34,6 +50,7 @@ const TableWrapper = styled.div`
     }
   }
 `
+
 function CustomTable(props: CustomTableProps) {
   const { headers, rows } = props
   return (
