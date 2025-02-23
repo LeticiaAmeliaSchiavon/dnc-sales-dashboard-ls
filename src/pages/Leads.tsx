@@ -1,27 +1,75 @@
-import { ChangeEvent, useState, useEffect } from 'react'
-
-// COMPONENTS
+/* eslint-disable react-hooks/exhaustive-deps */
+import { ChangeEvent, useEffect, useState } from 'react'
 import {
   CardComponent,
   CustomTable,
-  FormComponent,
   Header,
-  StyledH2,
+  FormComponent,
   StyledButton,
+  StyledH2,
   StyledSpan,
   StyledP,
 } from '@/components'
+import { AxiosRequestConfig } from 'axios'
+
+// HOOKS
+import { useFormValidation, useDelete, useGet, usePost } from '@/hooks'
+
 // MUI
 import Container from '@mui/material/Container'
 import Grid from '@mui/material/Grid'
-
-// HOOKS
-import { useFormValidation, useGet, usePost, useDelete } from '@/hooks'
 
 // TYPES
 import { InputProps, LeadsData, LeadsPostData, MessageProps } from '@/types'
 
 function Leads() {
+  // FORM
+  const inputs: InputProps[] = [
+    {
+      name: 'name',
+      type: 'text',
+      placeholder: 'Nome completo',
+      required: true,
+    },
+    { name: 'email', type: 'email', placeholder: 'Email', required: true },
+    { name: 'phone', type: 'tel', placeholder: 'Telefone', required: true },
+  ]
+  const [createMessage, setCreateMessage] = useState<MessageProps>({
+    type: 'success',
+    msg: '',
+  })
+  const clearMessage = () => {
+    setTimeout(() => {
+      setCreateMessage({
+        msg: '',
+        type: 'success',
+      })
+    }, 3000)
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    await createLeadsPostData({
+      name: String(formValues[0]),
+      email: String(formValues[1]),
+      phone: String(formValues[2]),
+    })
+  }
+
+  const handleDelete = async (id: number) => {
+    if (confirm('Tem certeza que deseja excluir sua conta?') === true) {
+      try {
+        await leadsDeleteData({ params: { id: id } })
+        alert('Lead deletado com sucesso!')
+        getLeads()
+      } catch (e) {
+        alert(
+          'Não foi possível realizar a operação. Entre em contato com nosso suporte.'
+        )
+      }
+    }
+  }
+
   // HOOKS
   const {
     data: createLeadsData,
@@ -38,50 +86,9 @@ function Leads() {
   } = useGet<LeadsData[]>('leads')
 
   const { deleteData: leadsDeleteData, loading: leadsDeleteLoading } =
-    useDelete('leads/delete')
+    useDelete<AxiosRequestConfig>(`leads/delete`)
 
-  // FORM
-  const inputs: InputProps[] = [
-    { name: 'name', type: 'text', placeholder: 'Nome', required: true },
-    { name: 'email', type: 'email', placeholder: 'Email', required: true },
-    { name: 'phone', type: 'tel', placeholder: 'Telefone', required: true },
-  ]
   const { formValues, formValid, handleChange } = useFormValidation(inputs)
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    await createLeadsPostData({
-      name: String(formValues[0]),
-      email: String(formValues[1]),
-      phone: String(formValues[2]),
-    })
-  }
-
-  const handleDelete = async (id: number) => {
-    if (confirm('Tem certeza que deseja excluir seu lead?') === true) {
-      try {
-        await leadsDeleteData({ params: { id: id } })
-        alert('Lead deletado com sucesso!')
-        getLeads()
-      } catch (e) {
-        alert(
-          'Não foi possível realizar a operação. Entre em contato com nosso suporte.'
-        )
-      }
-    }
-  }
-
-  const [createMessage, setCreateMessage] = useState<MessageProps>({
-    type: 'success',
-    msg: '',
-  })
-  const clearMessage = () => {
-    setTimeout(() => {
-      setCreateMessage({
-        msg: '',
-        type: 'success',
-      })
-    }, 3000)
-  }
 
   useEffect(() => {
     if (createLeadsData?.id) {
@@ -96,6 +103,7 @@ function Leads() {
         msg: 'Não foi possível realizar a operação. Entre em contato com nosso suporte.',
         type: 'error',
       })
+      clearMessage()
     } else {
       clearMessage()
     }

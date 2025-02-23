@@ -1,9 +1,16 @@
 import { StyledH2, StyledSpan } from '@/components'
-import { Avatar, Box } from '@mui/material'
-import { pxToRem } from '@/utils'
-import { AvatarsListProps } from '@/types'
 
-function AvatarList(props: AvatarsListProps) {
+// MUI
+import Avatar from '@mui/material/Avatar'
+import Box from '@mui/material/Box'
+
+// UTILS
+import { pxToRem } from '@/utils'
+
+// TYPES
+import { AvatarsListsProps } from '@/types'
+
+function AvatarsList(props: AvatarsListsProps) {
   return (
     <>
       {props.listData.map((item, index) => (
@@ -12,13 +19,13 @@ function AvatarList(props: AvatarsListProps) {
             alignItems: 'center',
             display: 'flex',
             padding: `${pxToRem(12)} 0`,
-            key: { index },
           }}
+          key={index}
         >
           <Box>
             <Avatar
               alt={item.name}
-              src={item.avatar}
+              src={item.avatar || '/dnc-avatar.jpg'}
               sx={{
                 width: pxToRem(48),
                 height: pxToRem(48),
@@ -36,4 +43,4 @@ function AvatarList(props: AvatarsListProps) {
   )
 }
 
-export default AvatarList
+export default AvatarsList
