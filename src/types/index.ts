@@ -1,5 +1,5 @@
 export * from './appThemeContext'
-export * from './avatarsList'
+export * from './avatarsLists'
 export * from './customChart'
 export * from './customTable'
 export * from './decodedJwt'
