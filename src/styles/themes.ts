@@ -5,14 +5,14 @@ export const lightTheme: Theme = {
   appColor: '#000',
   appDefaultStroke: '#E0E0E0',
   appLogo: 'dnc-logo-black.svg',
-  appSkeletonFrom: '#eee',
-  appSkeletonTo: '#ccc',
+  appSkeletonFrom: '#EEE',
+  appSketetonTo: '#CCC',
   buttons: {
     alert: '#E80000',
     alertColor: '#FFF',
     alertHover: '#D80000',
-    disabled: '#CCCCCC',
-    disabledColor: '#666666',
+    disabled: '#CCC',
+    disabledColor: '#666',
     primary: '#0C70F2',
     primaryColor: '#FFF',
     primaryHover: '#0061DE',
@@ -35,7 +35,7 @@ export const lightTheme: Theme = {
   },
   typographies: {
     error: '#FF0202',
-    subtitle: '#828282',
+    subtitle: '#666',
     success: '#008000',
   },
 }
@@ -46,7 +46,7 @@ export const darkTheme: Theme = {
   appDefaultStroke: '#21497D',
   appLogo: 'dnc-logo-white.svg',
   appSkeletonFrom: '#060B26',
-  appSkeletonTo: '#21497D',
+  appSketetonTo: '#21497D',
   buttons: {
     alert: '#E80000',
     alertColor: '#FFF',
