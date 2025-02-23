@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { ChangeEvent, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { jwtDecode } from 'jwt-decode'
@@ -23,18 +24,14 @@ import { useFormValidation, usePost } from '@/hooks'
 // UTILS
 import { jwtExpirationDateConverter, pxToRem } from '@/utils'
 
-// TYPES
-import { DecodedJWT, MessageProps, LoginData, LoginPostData } from '@/types'
-
 // REDUX
 import { useSelector } from 'react-redux'
 import { RootState } from '@/redux'
 
+// TYPES
+import { DecodedJWT, LoginData, LoginPostData, MessageProps } from '@/types'
+
 function Login() {
-  const navigate = useNavigate()
-  const { email, message } = useSelector(
-    (state: RootState) => state.createProfile
-  )
   const inputs = [
     { type: 'email', placeholder: 'Email' },
     { type: 'password', placeholder: 'Senha' },
@@ -43,13 +40,21 @@ function Login() {
     'login'
   )
   const { formValues, formValid, handleChange } = useFormValidation(inputs)
+  const { email, message } = useSelector(
+    (state: RootState) => state.createProfile
+  )
+  const navigate = useNavigate()
 
   const handleMessage = (): MessageProps => {
-    if (!error) return { msg: message ?? '', type: 'success' }
+    if (!error)
+      return {
+        msg: message ?? '',
+        type: 'success',
+      }
     switch (error) {
       case 401:
         return {
-          msg: 'Email e/ou senha inválidos',
+          msg: 'Email e/ou senha inválidos.',
           type: 'error',
         }
       default:
@@ -124,12 +129,7 @@ function Login() {
               />
             </Container>
           </Grid>
-          <Grid
-            item
-            xs={12}
-            sm={6}
-            sx={{ display: { xs: 'none', sm: 'block' } }}
-          >
+          <Grid item sm={6} sx={{ display: { xs: 'none', sm: 'block' } }}>
             <BannerImage />
           </Grid>
         </Grid>

@@ -1,9 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { ChangeEvent, useContext, useEffect, useState } from 'react'
-import { AppThemeContext } from '@/contexts/AppThemeContext'
-import Cookies from 'js-cookie'
-
-// COMPONENTS
 import {
   CardComponent,
   Header,
@@ -11,6 +7,8 @@ import {
   StyledButton,
   StyledH2,
 } from '@/components'
+import { AppThemeContext } from '@/contexts/AppThemeContext'
+import Cookies from 'js-cookie'
 
 // HOOKS
 import { useFormValidation, useDelete, useGet, usePut } from '@/hooks'

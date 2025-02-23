@@ -1,6 +1,3 @@
-import { Link } from 'react-router-dom'
-
-// COMPONENTS
 import {
   AvatarsList,
   CardComponent,
@@ -11,42 +8,51 @@ import {
   StyledH3,
   StyledSpan,
 } from '@/components'
-import { Container, Grid } from '@mui/material'
+import { Link } from 'react-router-dom'
 
 // HOOKS
 import { useGet } from '@/hooks'
 
+// MUI
+import Container from '@mui/material/Container'
+import Grid from '@mui/material/Grid'
+
 // UTILS
-import { currencyConverter, highlightTextConvert } from '@/utils'
+import { currencyConverter, highlightTextConverter } from '@/utils'
 
 // TYPES
-import { HighlightsData, StarsData, NewsData, CustomChartProps } from '@/types'
+import { CustomChartProps, HighlightsData, NewsData, StarsData } from '@/types'
 
 function Home() {
+  // HIGHLIGHTS
   const {
     data: highlightsData,
     loading: highlightsLoading,
     error: highlightsError,
   } = useGet<HighlightsData[]>('sales/highlights')
 
+  // SALES PER MONTH
   const {
-    data: salesMonthData,
-    loading: salesMonthLoading,
-    error: salesMonthError,
+    data: salesPerMonthData,
+    loading: salesPerMonthLoading,
+    error: salesPerMonthError,
   } = useGet<CustomChartProps>('sales/month')
 
+  // SALES STARS
   const {
     data: salesStarsData,
     loading: salesStarsLoading,
     error: salesStarsError,
   } = useGet<StarsData[]>('sales/stars')
 
+  // NEWS
   const {
     data: newsData,
     loading: newsLoading,
     error: newsError,
   } = useGet<NewsData[]>('news')
 
+  // YEAR
   const {
     data: salesYearData,
     loading: salesYearLoading,
@@ -67,6 +73,7 @@ function Home() {
                       ? 'skeleton-loading skeleton-loading-mh-1'
                       : ''
                   }
+                  id="total-sales"
                 >
                   {!highlightsLoading && highlightsData && (
                     <>
@@ -88,6 +95,7 @@ function Home() {
                       ? highlightsData[1].subtitle
                       : 'skeleton-loading skeleton-loading-mh-1'
                   }
+                  id="month-goal"
                 >
                   {!highlightsLoading && highlightsData && (
                     <>
@@ -103,7 +111,7 @@ function Home() {
                         {currencyConverter(highlightsData[1].value)}
                       </StyledH3>
                       <StyledSpan color="white">
-                        {highlightTextConvert(highlightsData[1].subtitle)}
+                        {highlightTextConverter(highlightsData[1].subtitle)}
                       </StyledSpan>
                     </>
                   )}
@@ -116,36 +124,40 @@ function Home() {
                       ? 'skeleton-loading skeleton-loading-mh-1'
                       : ''
                   }
+                  id="total-leads"
                 >
                   {!highlightsLoading && highlightsData && (
-                    <Link to="/leads">
-                      <StyledH2 className="mb-1">Leads contactados</StyledH2>
-                      <StyledH3 className="mb-1" size={40} lineheight={40}>
-                        {highlightsData[2].value}
-                      </StyledH3>
-                      <StyledSpan>{highlightsData[2].subtitle}</StyledSpan>
-                    </Link>
+                    <>
+                      <Link to="/leads">
+                        <StyledH2 className="mb-1">Leads contactados</StyledH2>
+                        <StyledH3 className="mb-1" size={40} lineheight={40}>
+                          {highlightsData[2].value}
+                        </StyledH3>
+                        <StyledSpan>{highlightsData[2].subtitle}</StyledSpan>
+                      </Link>
+                    </>
                   )}
                 </CardComponent>
               </Grid>
             </>
           )}
           <Grid item xs={12} md={7}>
-            {!salesMonthError && (
+            {!salesPerMonthError && (
               <CardComponent
                 className={
-                  salesMonthLoading
+                  salesPerMonthLoading
                     ? 'skeleton-loading skeleton-loading-mh-2'
                     : ''
                 }
+                id="month-sales-chart"
               >
-                {!salesMonthLoading && salesMonthData && (
+                {!salesPerMonthLoading && salesPerMonthData && (
                   <>
                     <StyledH2 className="mb-1">Valor de vendas no mês</StyledH2>
                     <CustomChart
-                      labels={salesMonthData.labels.map((label) => label)}
-                      data={salesMonthData.data.map((data) => data)}
-                      type={salesMonthData.type}
+                      labels={salesPerMonthData.labels.map((label) => label)}
+                      data={salesPerMonthData.data.map((data) => data)}
+                      type={salesPerMonthData.type}
                     />
                   </>
                 )}
@@ -160,15 +172,15 @@ function Home() {
                     ? 'skeleton-loading skeleton-loading-mh-2'
                     : ''
                 }
+                id="sales-stars"
               >
                 {!salesStarsLoading && salesStarsData && (
                   <>
                     <StyledH2 className="mb-1">
-                      Maiores vendedores do mês
+                      Maiores vendedores no mês
                     </StyledH2>
                     <AvatarsList
                       listData={salesStarsData.map((star) => ({
-                        avatar: '/dnc-avatar.svg',
                         name: star.name,
                         subtitle: currencyConverter(star.value),
                       }))}
@@ -184,6 +196,7 @@ function Home() {
                 className={
                   newsLoading ? 'skeleton-loading skeleton-loading-mh-2' : ''
                 }
+                id="news"
               >
                 {!newsLoading && newsData && (
                   <>

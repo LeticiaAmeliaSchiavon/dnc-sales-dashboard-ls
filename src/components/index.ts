@@ -1,4 +1,4 @@
-export { default as AvatarsList } from './AvatarList'
+export { default as AvatarsList } from './AvatarsList'
 export { default as CustomChart } from './CustomChart'
 export { default as CustomTable } from './CustomTable'
 export { default as FormComponent } from './FormComponent'
